@@ -525,6 +525,11 @@ footer p {
   margin: 0;
 }
 
+footer a {
+  color: var(--mint-dark);
+  font-weight: 800;
+}
+
 @keyframes floaty {
   0%,
   100% {
@@ -558,7 +563,7 @@ footer p {
   nav {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     font-size: 13px;
     text-align: center;
