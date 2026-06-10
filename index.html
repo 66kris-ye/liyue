@@ -1,772 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>李悦 · 个人小站</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: "Nunito", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: linear-gradient(135deg, #ffe8ee 0%, #ffdce5 30%, #ffd0db 70%, #ffe4ec 100%);
-      color: #5a3d4a;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-    a { text-decoration: none; color: inherit; }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>椰汁日历</title>
+    <meta
+      name="description"
+      content="椰汁的可爱日常陪伴小站，包含每日夸夸、心情、纪念日、约会清单和小问答。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="回到椰汁日历首页">
+        <span class="brand-mark">椰</span>
+        <span>椰汁日历</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="#mood">心情</a>
+        <a href="#plans">清单</a>
+        <a href="#quiz">问答</a>
+      </nav>
+    </header>
 
-    /* ===== Floating Stickers BG ===== */
-    .stickers {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      overflow: hidden;
-    }
-    .stickers .s {
-      position: absolute; font-size: 2rem; opacity: 0.2;
-      animation: floatSticker 8s ease-in-out infinite;
-    }
-    .stickers .s:nth-child(1) { top: 5%; left: 3%; animation-delay: 0s; font-size: 2.4rem; }
-    .stickers .s:nth-child(2) { top: 15%; right: 6%; animation-delay: 1.2s; font-size: 1.8rem; }
-    .stickers .s:nth-child(3) { top: 45%; left: 2%; animation-delay: 2.5s; font-size: 2rem; }
-    .stickers .s:nth-child(4) { top: 60%; right: 4%; animation-delay: 0.8s; font-size: 2.2rem; }
-    .stickers .s:nth-child(5) { top: 80%; left: 6%; animation-delay: 3.2s; font-size: 1.6rem; }
-    .stickers .s:nth-child(6) { top: 30%; right: 12%; animation-delay: 1.8s; font-size: 1.4rem; }
-    .stickers .s:nth-child(7) { top: 75%; right: 15%; animation-delay: 4s; font-size: 1.8rem; }
-    .stickers .s:nth-child(8) { top: 50%; left: 12%; animation-delay: 0.5s; font-size: 1.2rem; }
-    .stickers .s:nth-child(9) { top: 88%; left: 50%; animation-delay: 2s; font-size: 1.6rem; }
-    .stickers .s:nth-child(10) { top: 10%; left: 50%; animation-delay: 3.5s; font-size: 1.2rem; }
-    /* Cat stickers - special animated kitties */
-    .stickers .cat {
-      position: absolute; font-size: 2.2rem; pointer-events: none; z-index: 1;
-    }
-    .stickers .cat:nth-child(11) {
-      top: 72%; left: 4%;
-      animation: catBounce 2.8s ease-in-out infinite;
-    }
-    .stickers .cat:nth-child(12) {
-      top: 12%; right: 8%;
-      animation: catSway 3.5s ease-in-out infinite;
-    }
-    .stickers .cat:nth-child(13) {
-      top: 55%; right: 2%;
-      animation: catSpin 5s linear infinite;
-      font-size: 1.8rem;
-    }
-    .stickers .cat:nth-child(14) {
-      bottom: 6%; left: 15%;
-      animation: catWalk 4s ease-in-out infinite;
-      font-size: 2rem;
-    }
-    .stickers .cat:nth-child(15) {
-      top: 35%; left: 1%;
-      animation: catStretch 3.2s ease-in-out infinite;
-      font-size: 1.6rem;
-    }
-    @keyframes catBounce {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      20% { transform: translateY(-18px) rotate(-8deg); }
-      40% { transform: translateY(0) rotate(4deg); }
-      60% { transform: translateY(-10px) rotate(-4deg); }
-      80% { transform: translateY(0) rotate(2deg); }
-    }
-    @keyframes catSway {
-      0%, 100% { transform: translateX(0) rotate(0deg); }
-      25% { transform: translateX(12px) rotate(6deg); }
-      75% { transform: translateX(-12px) rotate(-6deg); }
-    }
-    @keyframes catSpin {
-      0% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(90deg) scale(1.1); }
-      50% { transform: rotate(180deg) scale(1); }
-      75% { transform: rotate(270deg) scale(1.1); }
-      100% { transform: rotate(360deg) scale(1); }
-    }
-    @keyframes catWalk {
-      0%, 100% { transform: translateX(0) scaleX(1); }
-      25% { transform: translateX(20px) scaleX(1) translateY(-4px); }
-      50% { transform: translateX(40px) scaleX(-1) translateY(0); }
-      75% { transform: translateX(20px) scaleX(-1) translateY(-4px); }
-    }
-    /* Walking cat along the bottom edge */
-    .walking-cat {
-      position: fixed; bottom: 12px; left: -60px; z-index: 2;
-      font-size: 2rem; pointer-events: none;
-      animation: walkAcross 12s linear infinite;
-    }
-    /* Occasional paw prints */
-    .paw-prints {
-      position: fixed; pointer-events: none; z-index: 1;
-      font-size: 0.8rem; opacity: 0.15; letter-spacing: 6px;
-    }
-    .paw-prints.p1 { bottom: 48px; left: 10%; }
-    .paw-prints.p2 { bottom: 48px; left: 40%; animation-delay: 1s; }
-    .paw-prints.p3 { bottom: 48px; left: 70%; animation-delay: 2s; }
-    @keyframes walkAcross {
-      0% { transform: translateX(0) scaleX(1); }
-      45% { transform: translateX(calc(100vw + 80px)) scaleX(1); }
-      50% { transform: translateX(calc(100vw + 80px)) scaleX(-1); }
-      95% { transform: translateX(0) scaleX(-1); }
-      100% { transform: translateX(0) scaleX(1); }
-    }
-    @keyframes catStretch {
-      0%, 100% { transform: scaleY(1) scaleX(1); }
-      30% { transform: scaleY(1.3) scaleX(0.9); }
-      60% { transform: scaleY(1) scaleX(1); }
-      80% { transform: scaleY(1.2) scaleX(0.95); }
-    }
-
-    @keyframes floatSticker {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      30% { transform: translateY(-12px) rotate(5deg); }
-      60% { transform: translateY(6px) rotate(-3deg); }
-    }
-
-    /* ===== Glass Card Style ===== */
-    .glass {
-      background: rgba(255, 242, 246, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 2px solid rgba(232, 67, 147, 0.12);
-    }
-
-    /* ===== Navigation ===== */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255, 232, 238, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 2px solid rgba(232, 67, 147, 0.12);
-    }
-    nav .container {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px;
-    }
-    .nav-logo {
-      font-weight: 800; font-size: 1.2rem;
-      color: #e84393;
-    }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-links a {
-      font-size: 0.85rem; font-weight: 700; color: #b07a8a;
-      padding: 5px 14px; border-radius: 100px;
-      transition: all 0.3s;
-    }
-    .nav-links a:hover {
-      background: rgba(232, 67, 147, 0.12);
-      color: #e84393;
-    }
-
-    /* ===== Hero ===== */
-    .hero {
-      min-height: 100vh; display: flex; align-items: center;
-      padding: 100px 0 60px; position: relative; z-index: 1;
-    }
-    .hero-inner {
-      display: flex; align-items: center; gap: 48px;
-    }
-    .hero-left { flex: 1; }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 4px;
-      background: rgba(232, 67, 147, 0.12);
-      color: #e84393;
-      font-weight: 700; font-size: 0.8rem;
-      padding: 5px 14px; border-radius: 100px;
-      margin-bottom: 16px;
-    }
-    .hero h1 {
-      font-size: 3.4rem; font-weight: 800; line-height: 1.15;
-      margin-bottom: 4px;
-    }
-    .hero h1 .pink { color: #e84393; }
-    .hero .sub {
-      font-size: 1.2rem; font-weight: 600; color: #b07a8a;
-      margin-bottom: 12px;
-    }
-    .hero p {
-      color: #b07a8a; font-size: 0.92rem;
-      max-width: 400px; margin-bottom: 24px;
-    }
-    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 11px 26px; border-radius: 100px;
-      font-size: 0.85rem; font-weight: 700; font-family: inherit;
-      transition: all 0.3s; cursor: pointer; border: none;
-    }
-    .btn-pink {
-      background: #e84393; color: #fff;
-      box-shadow: 0 4px 14px rgba(232,67,147,0.25);
-    }
-    .btn-pink:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(232,67,147,0.3); }
-    .btn-soft {
-      background: rgba(232, 67, 147, 0.1);
-      color: #e84393;
-      backdrop-filter: blur(8px);
-    }
-    .btn-soft:hover { transform: translateY(-3px); background: rgba(232, 67, 147, 0.18); }
-
-    /* ===== Hero Right ===== */
-    .hero-right { flex-shrink: 0; position: relative; }
-    .kitty-box {
-      width: 220px; height: 220px; border-radius: 50%;
-      background: linear-gradient(135deg, #ffd6e0, #ffe8ee);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 4.5rem;
-      position: relative;
-      box-shadow: 0 8px 32px rgba(232,67,147,0.12);
-      animation: kittyFloat 3.5s ease-in-out infinite;
-      border: 2px solid rgba(232, 67, 147, 0.1);
-    }
-    @keyframes kittyFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    .kitty-bow {
-      position: absolute; top: -8px; right: -8px; font-size: 2.2rem;
-      animation: bowWiggle 2s ease-in-out infinite;
-    }
-    @keyframes bowWiggle {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-8deg); }
-      75% { transform: rotate(8deg); }
-    }
-    .kitty-hearts {
-      position: absolute; bottom: 4px; left: -6px; font-size: 1.4rem;
-      animation: heartBeat 1.5s ease-in-out infinite;
-    }
-    .kitty-peek {
-      position: absolute; bottom: -16px; right: -16px; font-size: 2rem;
-      animation: peekaboo 3s ease-in-out infinite;
-    }
-    @keyframes peekaboo {
-      0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
-      45% { transform: translateY(0) scale(1); opacity: 1; }
-      50% { transform: translateY(6px) scale(0.9); opacity: 0.6; }
-      55% { transform: translateY(0) scale(1); opacity: 1; }
-    }
-    @keyframes heartBeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    .scroll-hint {
-      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      color: #d4a0b0; font-size: 0.65rem; font-weight: 700;
-    }
-    .scroll-hint .arr { font-size: 0.9rem; animation: bounceArr 1.5s ease-in-out infinite; }
-    @keyframes bounceArr { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-
-    /* ===== Section Common ===== */
-    section { padding: 80px 0; position: relative; z-index: 1; }
-    .section-title {
-      font-size: 2rem; font-weight: 800; margin-bottom: 4px;
-    }
-    .section-title .emoji-tag { font-size: 1.4rem; display: inline-block; }
-    .section-desc { color: #b07a8a; margin-bottom: 40px; font-size: 0.9rem; font-weight: 600; }
-
-    /* ===== About ===== */
-    .about-flex { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-    .about-text p { color: #7a5a68; margin-bottom: 12px; font-size: 0.9rem; }
-    .about-text .big {
-      font-size: 1.05rem; font-weight: 700; color: #5a3d4a;
-      margin-bottom: 14px;
-    }
-    .about-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .about-tag {
-      font-size: 0.78rem; font-weight: 700; padding: 5px 14px;
-      border-radius: 100px;
-      background: rgba(232, 67, 147, 0.1);
-      color: #e84393;
-      transition: all 0.3s;
-    }
-    .about-tag:hover { transform: scale(1.05); background: rgba(232, 67, 147, 0.18); }
-
-    .about-cards {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-      align-content: start;
-    }
-    .mini-card {
-      border-radius: 20px; padding: 18px; text-align: center;
-      background: rgba(255, 242, 246, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 2px solid rgba(232, 67, 147, 0.1);
-      transition: all 0.3s;
-    }
-    .mini-card:hover { transform: translateY(-4px); border-color: rgba(232, 67, 147, 0.3); }
-    .mini-card .icon { font-size: 1.4rem; margin-bottom: 2px; }
-    .mini-card .num { font-size: 1.4rem; font-weight: 800; color: #e84393; }
-    .mini-card .lbl { font-size: 0.72rem; color: #b07a8a; font-weight: 600; }
-
-    /* ===== Services ===== */
-    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .svc-card {
-      border-radius: 24px; padding: 28px 20px; text-align: center;
-      background: rgba(255, 242, 246, 0.65);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 2px solid rgba(232, 67, 147, 0.1);
-      transition: all 0.3s;
-    }
-    .svc-card:hover { transform: translateY(-6px); border-color: rgba(232, 67, 147, 0.25); box-shadow: 0 8px 24px rgba(232,67,147,0.08); }
-    .svc-card .emoji { font-size: 2.2rem; margin-bottom: 10px; }
-    .svc-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
-    .svc-card p { font-size: 0.8rem; color: #7a5a68; line-height: 1.7; }
-
-    /* ===== Profile Cards ===== */
-    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .profile-card {
-      border-radius: 24px; padding: 24px;
-      background: rgba(255, 242, 246, 0.65);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 2px solid rgba(232, 67, 147, 0.1);
-      display: flex; align-items: center; gap: 16px;
-      transition: all 0.3s;
-    }
-    .profile-card:hover { border-color: rgba(232, 67, 147, 0.25); transform: translateY(-3px); }
-    .profile-card .emoji { font-size: 2rem; flex-shrink: 0; }
-    .profile-card .info h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
-    .profile-card .info p { font-size: 0.8rem; color: #7a5a68; }
-
-    /* ===== Gallery ===== */
-    .gallery-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-    }
-    .gallery-item {
-      border-radius: 20px; aspect-ratio: 1;
-      background: rgba(255, 214, 224, 0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 2px solid rgba(232, 67, 147, 0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.8rem; transition: all 0.3s;
-    }
-    .gallery-item:hover { transform: scale(1.04); border-color: rgba(232, 67, 147, 0.25); }
-
-    /* ===== Testimonials ===== */
-    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .testi-card {
-      border-radius: 24px; padding: 24px;
-      background: rgba(255, 242, 246, 0.65);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 2px solid rgba(232, 67, 147, 0.1);
-    }
-    .testi-card .face { font-size: 1.6rem; margin-bottom: 6px; }
-    .testi-card blockquote {
-      font-size: 0.82rem; color: #7a5a68; line-height: 1.7;
-      margin-bottom: 10px;
-    }
-    .testi-card .name { font-size: 0.82rem; font-weight: 700; }
-    .testi-card .role { font-size: 0.7rem; color: #b07a8a; font-weight: 600; }
-
-    /* ===== Diary ===== */
-    .diary-list { display: flex; flex-direction: column; gap: 12px; }
-    .diary-item {
-      border-radius: 20px; padding: 20px 24px;
-      background: rgba(255, 242, 246, 0.65);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 2px solid rgba(232, 67, 147, 0.1);
-      display: flex; gap: 16px; align-items: flex-start;
-      transition: all 0.3s;
-    }
-    .diary-item:hover { border-color: rgba(232, 67, 147, 0.25); transform: translateX(4px); }
-    .diary-item .emoji { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
-    .diary-item .date { font-size: 0.7rem; color: #b07a8a; font-weight: 600; }
-    .diary-item h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
-    .diary-item p { font-size: 0.8rem; color: #7a5a68; }
-
-    /* ===== Contact ===== */
-    .contact-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-    .contact-left p { color: #7a5a68; margin-bottom: 20px; font-size: 0.88rem; }
-    .contact-row {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 12px; font-size: 0.82rem; color: #7a5a68;
-      font-weight: 600; transition: color 0.3s;
-    }
-    .contact-row:hover { color: #e84393; }
-    .contact-row .icon-bg {
-      width: 36px; height: 36px; border-radius: 12px;
-      background: rgba(232, 67, 147, 0.1);
-      display: flex; align-items: center;
-      justify-content: center; font-size: 1rem;
-    }
-    .contact-form { display: flex; flex-direction: column; gap: 10px; }
-    .contact-form .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .contact-form input,
-    .contact-form textarea {
-      padding: 12px 16px; border: 2px solid rgba(232, 67, 147, 0.12);
-      border-radius: 16px; font-size: 0.85rem; font-family: inherit;
-      transition: border 0.3s;
-      background: rgba(255, 242, 246, 0.6);
-      backdrop-filter: blur(8px);
-      color: #5a3d4a;
-    }
-    .contact-form input:focus,
-    .contact-form textarea:focus { outline: none; border-color: #e84393; }
-    .contact-form input::placeholder,
-    .contact-form textarea::placeholder { color: #cfa0b0; }
-    .contact-form textarea { min-height: 90px; resize: vertical; }
-
-    /* ===== Footer ===== */
-    footer {
-      border-top: 2px solid rgba(232, 67, 147, 0.1);
-      padding: 24px 0;
-      position: relative; z-index: 1;
-    }
-    footer .container {
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    footer .copy { font-size: 0.78rem; color: #b07a8a; font-weight: 600; }
-    footer .social { display: flex; gap: 14px; }
-    footer .social a {
-      font-size: 0.78rem; font-weight: 700; color: #b07a8a;
-      transition: color 0.3s;
-    }
-    footer .social a:hover { color: #e84393; }
-
-    /* ===== Reveal ===== */
-    .reveal {
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .d1 { transition-delay: 0.08s; }
-    .d2 { transition-delay: 0.16s; }
-    .d3 { transition-delay: 0.24s; }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 800px) {
-      .hero-inner { flex-direction: column; text-align: center; }
-      .hero p { max-width: 100%; }
-      .hero-actions { justify-content: center; }
-      .kitty-box { width: 160px; height: 160px; font-size: 3.4rem; }
-      .hero h1 { font-size: 2.6rem; }
-      .about-flex, .contact-split { grid-template-columns: 1fr; }
-      .svc-grid, .testi-grid, .gallery-grid { grid-template-columns: 1fr 1fr; }
-      .profile-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 2rem; }
-      .nav-links { display: none; }
-      section { padding: 50px 0; }
-      .svc-grid, .testi-grid, .gallery-grid { grid-template-columns: 1fr; }
-      .section-title { font-size: 1.5rem; }
-      .contact-form .duo { grid-template-columns: 1fr; }
-      footer .container { flex-direction: column; gap: 8px; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Floating Stickers -->
-  <div class="stickers">
-    <span class="s">🎀</span>
-    <span class="s">🌸</span>
-    <span class="s">🫶</span>
-    <span class="s">🎀</span>
-    <span class="s">💖</span>
-    <span class="s">🌸</span>
-    <span class="s">🎀</span>
-    <span class="s">💕</span>
-    <span class="s">🌸</span>
-    <span class="s">🎀</span>
-    <!-- Cute animated cats -->
-    <span class="cat">🥰</span>
-    <span class="cat">🐱</span>
-    <span class="cat">😺</span>
-    <span class="cat">😸</span>
-    <span class="cat">🐈</span>
-  </div>
-
-  <!-- Walking cat on the floor -->
-  <div class="walking-cat">🐱</div>
-  <div class="paw-prints p1">🐾 🐾 🐾</div>
-  <div class="paw-prints p2">🐾 🐾 🐾</div>
-  <div class="paw-prints p3">🐾 🐾 🐾</div>
-
-  <!-- Nav -->
-  <nav>
-    <div class="container">
-      <a href="#" class="nav-logo">🎀 李悦</a>
-      <ul class="nav-links">
-        <li><a href="#about">关于</a></li>
-        <li><a href="#life">日常</a></li>
-        <li><a href="#gallery">相册</a></li>
-        <li><a href="#diary">日记</a></li>
-        <li><a href="#contact">联系</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-inner">
-        <div class="hero-left">
-          <div class="hero-tag">🎀 Hello! 欢迎来玩</div>
-          <h1>
-            嗨！我是<br>
-            <span class="pink">李悦</span> 🎀
-          </h1>
-          <div class="sub">长江师范大学 · 物流管理专业 · 大三 🎒</div>
-          <p>
-            喜欢粉色、小猫、奶茶和一切可爱的东西。
-            正在努力学专业课、探索新事物、记录生活里的小美好。
-            想把每一天都过得粉粉嫩嫩 ✨
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">今天也要被温柔接住</p>
+          <h1 id="hero-title">椰汁</h1>
+          <p class="hero-subtitle">
+            一份奶白色的日常小日历，打开就有夸夸、心情、约会愿望和只给她看的小惊喜。
           </p>
           <div class="hero-actions">
-            <a href="#life" class="btn btn-pink">🌸 看看我的小世界</a>
-            <a href="#contact" class="btn btn-soft">💌 给我写信</a>
+            <a class="button primary" href="#mood">记录今日心情</a>
+            <button class="button ghost" type="button" data-random-compliment>
+              抽一张夸夸
+            </button>
           </div>
         </div>
-        <div class="hero-right">
-          <div class="kitty-box">
-            🎀
-            <span class="kitty-bow">🌸</span>
-            <span class="kitty-hearts">💖</span>
-            <span class="kitty-peek">🐱</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="scroll-hint">
-      <span>滑一滑</span>
-      <span class="arr">↓</span>
-    </div>
-  </section>
 
-  <!-- About -->
-  <section id="about">
-    <div class="container">
-      <h2 class="section-title reveal"><span class="emoji-tag">🫶</span> 关于我</h2>
-      <p class="section-desc reveal">一个普通但快乐的大学生</p>
-      <div class="about-flex">
-        <div class="about-text reveal">
-          <p class="big">
-            相信生活里的小确幸，喜欢用可爱的方式记录每一天 💕
+        <div class="hero-panel" aria-label="今日卡片">
+          <div class="today-card">
+            <span class="today-label">Today</span>
+            <strong id="todayText">正在读取今天</strong>
+            <p id="heroCompliment">椰汁今天也很值得被偏爱。</p>
+          </div>
+          <img
+            class="hero-asset"
+            src="assets/coconut-calendar-hero.png"
+            alt="可爱的椰汁和椰子插画"
+          />
+        </div>
+      </section>
+
+      <section class="quick-grid" aria-label="日常快捷信息">
+        <article>
+          <span>陪伴值</span>
+          <strong id="careScore">98</strong>
+          <p>会随着互动慢慢上涨。</p>
+        </article>
+        <article>
+          <span>下次约会</span>
+          <strong>待填写</strong>
+          <p>以后可以换成真实日期。</p>
+        </article>
+        <article>
+          <span>今日主题</span>
+          <strong id="dailyTheme">椰奶晴天</strong>
+          <p>适合喝点甜的，做点开心的事。</p>
+        </article>
+      </section>
+
+      <section class="section mood-section" id="mood" aria-labelledby="mood-title">
+        <div class="section-heading">
+          <p class="eyebrow">Mood</p>
+          <h2 id="mood-title">今天是哪一种椰汁？</h2>
+          <p>点一下状态，小站会给出今天的温柔回应。</p>
+        </div>
+        <div class="mood-list" role="list" aria-label="心情选择">
+          <button class="mood-button active" type="button" data-mood="sunny">
+            <span>晴天椰</span>
+          </button>
+          <button class="mood-button" type="button" data-mood="tired">
+            <span>需要抱抱</span>
+          </button>
+          <button class="mood-button" type="button" data-mood="sweet">
+            <span>甜甜椰</span>
+          </button>
+          <button class="mood-button" type="button" data-mood="quiet">
+            <span>安静充电</span>
+          </button>
+        </div>
+        <div class="mood-response" aria-live="polite">
+          <span id="moodTag">晴天椰</span>
+          <p id="moodText">今天适合被夸，也适合把快乐分一点给世界。</p>
+        </div>
+      </section>
+
+      <section class="section split-section" aria-labelledby="compliment-title">
+        <div class="compliment-box">
+          <p class="eyebrow">Compliment</p>
+          <h2 id="compliment-title">每日夸夸机</h2>
+          <p id="complimentText">
+            椰汁像冰好的椰奶一样，清清爽爽，但会让人记很久。
           </p>
+          <button class="button primary" type="button" data-random-compliment>
+            再抽一张
+          </button>
+        </div>
+        <div class="note-box">
+          <p class="eyebrow">Replaceable Copy</p>
+          <h2>留给以后的真实内容</h2>
           <p>
-            现在在长江师范大学读物流管理专业，大三啦！
-            虽然物流听起来很硬核，但我相信任何事情都可以用可爱的方式去对待 🎀
+            这里以后可以换成你们的纪念日、专属称呼、她喜欢的歌、城市、餐厅和小故事。
           </p>
-          <p>
-            平时喜欢画画、做手工、研究好看的东西。
-            也在自学前端开发，想做自己的个人网站很久啦！
-            最喜欢的颜色是粉色，最爱喝的是奶茶 🧋
-          </p>
-          <div class="about-tags">
-            <span class="about-tag">🎨 画画</span>
-            <span class="about-tag">💻 前端</span>
-            <span class="about-tag">📸 摄影</span>
-            <span class="about-tag">🐱 猫奴</span>
-            <span class="about-tag">🧋 奶茶</span>
-          </div>
         </div>
-        <div class="about-cards reveal d1">
-          <div class="mini-card">
-            <div class="icon">🎂</div>
-            <div class="num">20</div>
-            <div class="lbl">岁</div>
-          </div>
-          <div class="mini-card">
-            <div class="icon">📚</div>
-            <div class="num">大三</div>
-            <div class="lbl">物流管理</div>
-          </div>
-          <div class="mini-card">
-            <div class="icon">🐱</div>
-            <div class="num">2</div>
-            <div class="lbl">只猫猫</div>
-          </div>
-          <div class="mini-card">
-            <div class="icon">🧋</div>
-            <div class="num">∞</div>
-            <div class="lbl">奶茶不限量</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- School & Favorites -->
-  <section id="life">
-    <div class="container">
-      <h2 class="section-title reveal"><span class="emoji-tag">🌸</span> 我的日常</h2>
-      <p class="section-desc reveal">关于学校和喜欢的一切</p>
-      <div class="profile-grid">
-        <div class="profile-card reveal">
-          <span class="emoji">🏫</span>
-          <div class="info">
-            <h4>我的学校</h4>
-            <p>长江师范大学 · 物流管理专业 · 大三在读</p>
-          </div>
+      <section class="section plans-section" id="plans" aria-labelledby="plans-title">
+        <div class="section-heading">
+          <p class="eyebrow">Date List</p>
+          <h2 id="plans-title">椰汁愿望清单</h2>
+          <p>先放通用愿望，勾选会保存在当前浏览器里。</p>
         </div>
-        <div class="profile-card reveal d1">
-          <span class="emoji">⭐</span>
-          <div class="info">
-            <h4>最近在追</h4>
-            <p>可爱风格的插画师们！每天逛逛 Pinterest 找灵感</p>
-          </div>
-        </div>
-        <div class="profile-card reveal d2">
-          <span class="emoji">🎵</span>
-          <div class="info">
-            <h4>最近在听</h4>
-            <p>日系小清新歌单 + Lo-fi 学习背景音乐</p>
-          </div>
-        </div>
-        <div class="profile-card reveal d3">
-          <span class="emoji">🎯</span>
-          <div class="info">
-            <h4>最近目标</h4>
-            <p>学好专业课 + 做出超可爱的个人网站 ✨</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        <div class="wish-list" id="wishList" aria-live="polite"></div>
+      </section>
 
-  <!-- Gallery -->
-  <section id="gallery">
-    <div class="container">
-      <h2 class="section-title reveal"><span class="emoji-tag">📸</span> 相册一角</h2>
-      <p class="section-desc reveal">一些生活中可爱的小瞬间</p>
-      <div class="gallery-grid">
-        <div class="gallery-item reveal">☕</div>
-        <div class="gallery-item reveal d1">🌸</div>
-        <div class="gallery-item reveal d2">🐱</div>
-        <div class="gallery-item reveal d3">🧋</div>
-        <div class="gallery-item reveal">🎂</div>
-        <div class="gallery-item reveal d1">🌅</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials -->
-  <section>
-    <div class="container">
-      <h2 class="section-title reveal"><span class="emoji-tag">💬</span> 朋友说的</h2>
-      <p class="section-desc reveal">来自好朋友们的评价</p>
-      <div class="testi-grid">
-        <div class="testi-card reveal">
-          <div class="face">😊</div>
-          <blockquote>"李悦是我见过最可爱的女生！做事情认真又细心，而且超有品味。"</blockquote>
-          <div class="name">小陈</div>
-          <div class="role">室友 · 最佳饭搭子</div>
+      <section class="section quiz-section" id="quiz" aria-labelledby="quiz-title">
+        <div class="section-heading">
+          <p class="eyebrow">Tiny Quiz</p>
+          <h2 id="quiz-title">今日小问答</h2>
+          <p>答对会解锁一条小彩蛋，答错也会被温柔放过。</p>
         </div>
-        <div class="testi-card reveal d1">
-          <div class="face">🌟</div>
-          <blockquote>"和她一起做小组作业太开心了，思路清晰还特别会鼓励人！"</blockquote>
-          <div class="name">小林</div>
-          <div class="role">同班同学 · 作业战友</div>
+        <div class="quiz-card">
+          <p id="quizQuestion">椰汁今天最适合收到什么？</p>
+          <div class="quiz-options" id="quizOptions"></div>
+          <p class="quiz-result" id="quizResult" aria-live="polite"></p>
         </div>
-        <div class="testi-card reveal d2">
-          <div class="face">💕</div>
-          <blockquote>"每次和她逛街都能发现好多可爱的小店，李悦就是我的探店指南！"</blockquote>
-          <div class="name">小周</div>
-          <div class="role">好朋友 · 奶茶搭子</div>
+      </section>
+
+      <section class="section secret-section" aria-labelledby="secret-title">
+        <div>
+          <p class="eyebrow">Secret</p>
+          <h2 id="secret-title">隐藏小彩蛋</h2>
+          <p>连续点击下面的椰汁印章 5 次，会出现一封今天的小纸条。</p>
         </div>
-      </div>
-    </div>
-  </section>
+        <button class="stamp" type="button" id="secretButton" aria-label="椰汁印章">
+          椰汁
+        </button>
+        <p class="secret-message" id="secretMessage" aria-live="polite"></p>
+      </section>
+    </main>
 
-  <!-- Diary -->
-  <section id="diary">
-    <div class="container">
-      <h2 class="section-title reveal"><span class="emoji-tag">✍️</span> 小日记</h2>
-      <p class="section-desc reveal">一些零零碎碎的日常记录</p>
-      <div class="diary-list">
-        <a href="#" class="diary-item reveal">
-          <span class="emoji">🌸</span>
-          <div>
-            <div class="date">2026.04.25</div>
-            <h3>今天在校园里看到了樱花！</h3>
-            <p>拍了好多照片，粉粉的超好看～春天真的太美好了吧 🥹</p>
-          </div>
-        </a>
-        <a href="#" class="diary-item reveal d1">
-          <span class="emoji">💻</span>
-          <div>
-            <div class="date">2026.04.20</div>
-            <h3>终于开始做个人网站啦！</h3>
-            <p>想要做一个粉粉嫩嫩的网站，记录自己的生活。加油加油！💪</p>
-          </div>
-        </a>
-        <a href="#" class="diary-item reveal d2">
-          <span class="emoji">🧋</span>
-          <div>
-            <div class="date">2026.04.15</div>
-            <h3>和室友一起去喝了新出的奶茶</h3>
-            <p>桃子味的，好好喝！还送了可爱的贴纸，贴在电脑上了 ✨</p>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
+    <footer>
+      <p>Made for 椰汁. 内容均为通用占位，可随时替换成真实回忆。</p>
+    </footer>
 
-  <!-- Contact -->
-  <section id="contact">
-    <div class="container">
-      <h2 class="section-title reveal"><span class="emoji-tag">💌</span> 给我写信</h2>
-      <p class="section-desc reveal">想交朋友或者一起玩？随时找我呀！</p>
-      <div class="contact-split">
-        <div class="contact-left reveal">
-          <p>不管是想交朋友、一起做项目，还是只是想分享可爱的东西——我都很开心收到你的消息 🎀</p>
-          <div class="contact-row">
-            <span class="icon-bg">📧</span>
-            liyue@email.com
-          </div>
-          <div class="contact-row">
-            <span class="icon-bg">📷</span>
-            @liyue_pink
-          </div>
-          <div class="contact-row">
-            <span class="icon-bg">💻</span>
-            github.com/liyue
-          </div>
-        </div>
-        <form class="contact-form reveal d2" onsubmit="event.preventDefault(); this.innerHTML='<p style=\'font-size:1rem;color:#e84393;font-weight:700;\'>🎀 谢谢你的信！我会很快回复哒 💕</p>'">
-          <div class="duo">
-            <input type="text" placeholder="你的名字" required>
-            <input type="email" placeholder="你的邮箱" required>
-          </div>
-          <input type="text" placeholder="想聊什么呀（选填）">
-          <textarea placeholder="随便说点什么吧～" required></textarea>
-          <button type="submit" class="btn btn-pink" style="align-self:flex-start;">💌 发送</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <span class="copy">🎀 2026 李悦 · 把生活过成粉色</span>
-      <div class="social">
-        <a href="#">小红书</a>
-        <a href="#">微博</a>
-        <a href="#">Instagram</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('visible');
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-  </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
