@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>椰汁日历</title>
+    <meta
+      name="description"
+      content="椰汁的可爱日常陪伴小站，包含每日夸夸、心情、纪念日、约会清单和小问答。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="回到椰汁日历首页">
+        <span class="brand-mark">椰</span>
+        <span>椰汁日历</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="#mood">心情</a>
+        <a href="#plans">清单</a>
+        <a href="#quiz">问答</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">今天也要被温柔接住</p>
+          <h1 id="hero-title">椰汁</h1>
+          <p class="hero-subtitle">
+            一份奶白色的日常小日历，打开就有夸夸、心情、约会愿望和只给她看的小惊喜。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#mood">记录今日心情</a>
+            <button class="button ghost" type="button" data-random-compliment>
+              抽一张夸夸
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-panel" aria-label="今日卡片">
+          <div class="today-card">
+            <span class="today-label">Today</span>
+            <strong id="todayText">正在读取今天</strong>
+            <p id="heroCompliment">椰汁今天也很值得被偏爱。</p>
+          </div>
+          <img
+            class="hero-asset"
+            src="assets/coconut-calendar-hero.png"
+            alt="可爱的椰汁和椰子插画"
+          />
+        </div>
+      </section>
+
+      <section class="quick-grid" aria-label="日常快捷信息">
+        <article>
+          <span>陪伴值</span>
+          <strong id="careScore">98</strong>
+          <p>会随着互动慢慢上涨。</p>
+        </article>
+        <article>
+          <span>下次约会</span>
+          <strong>待填写</strong>
+          <p>以后可以换成真实日期。</p>
+        </article>
+        <article>
+          <span>今日主题</span>
+          <strong id="dailyTheme">椰奶晴天</strong>
+          <p>适合喝点甜的，做点开心的事。</p>
+        </article>
+      </section>
+
+      <section class="section mood-section" id="mood" aria-labelledby="mood-title">
+        <div class="section-heading">
+          <p class="eyebrow">Mood</p>
+          <h2 id="mood-title">今天是哪一种椰汁？</h2>
+          <p>点一下状态，小站会给出今天的温柔回应。</p>
+        </div>
+        <div class="mood-list" role="list" aria-label="心情选择">
+          <button class="mood-button active" type="button" data-mood="sunny">
+            <span>晴天椰</span>
+          </button>
+          <button class="mood-button" type="button" data-mood="tired">
+            <span>需要抱抱</span>
+          </button>
+          <button class="mood-button" type="button" data-mood="sweet">
+            <span>甜甜椰</span>
+          </button>
+          <button class="mood-button" type="button" data-mood="quiet">
+            <span>安静充电</span>
+          </button>
+        </div>
+        <div class="mood-response" aria-live="polite">
+          <span id="moodTag">晴天椰</span>
+          <p id="moodText">今天适合被夸，也适合把快乐分一点给世界。</p>
+        </div>
+      </section>
+
+      <section class="section split-section" aria-labelledby="compliment-title">
+        <div class="compliment-box">
+          <p class="eyebrow">Compliment</p>
+          <h2 id="compliment-title">每日夸夸机</h2>
+          <p id="complimentText">
+            椰汁像冰好的椰奶一样，清清爽爽，但会让人记很久。
+          </p>
+          <button class="button primary" type="button" data-random-compliment>
+            再抽一张
+          </button>
+        </div>
+        <div class="note-box">
+          <p class="eyebrow">Replaceable Copy</p>
+          <h2>留给以后的真实内容</h2>
+          <p>
+            这里以后可以换成你们的纪念日、专属称呼、她喜欢的歌、城市、餐厅和小故事。
+          </p>
+        </div>
+      </section>
+
+      <section class="section plans-section" id="plans" aria-labelledby="plans-title">
+        <div class="section-heading">
+          <p class="eyebrow">Date List</p>
+          <h2 id="plans-title">椰汁愿望清单</h2>
+          <p>先放通用愿望，勾选会保存在当前浏览器里。</p>
+        </div>
+        <div class="wish-list" id="wishList" aria-live="polite"></div>
+      </section>
+
+      <section class="section quiz-section" id="quiz" aria-labelledby="quiz-title">
+        <div class="section-heading">
+          <p class="eyebrow">Tiny Quiz</p>
+          <h2 id="quiz-title">今日小问答</h2>
+          <p>答对会解锁一条小彩蛋，答错也会被温柔放过。</p>
+        </div>
+        <div class="quiz-card">
+          <p id="quizQuestion">椰汁今天最适合收到什么？</p>
+          <div class="quiz-options" id="quizOptions"></div>
+          <p class="quiz-result" id="quizResult" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="section secret-section" aria-labelledby="secret-title">
+        <div>
+          <p class="eyebrow">Secret</p>
+          <h2 id="secret-title">隐藏小彩蛋</h2>
+          <p>连续点击下面的椰汁印章 5 次，会出现一封今天的小纸条。</p>
+        </div>
+        <button class="stamp" type="button" id="secretButton" aria-label="椰汁印章">
+          椰汁
+        </button>
+        <p class="secret-message" id="secretMessage" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Made for 椰汁. 内容均为通用占位，可随时替换成真实回忆。</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
